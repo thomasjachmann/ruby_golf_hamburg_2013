@@ -1,7 +1,133 @@
 module RubyGolf
 
-  def self.add(a, b)
-    a + b
+  ##############################################################################
+  # Hole 1: RubyGolf.x_out_numbers                                             #
+  ##############################################################################
+  # input:  n - numbers string to be x'ed out,
+  #         v - number of visible trailing numbers
+  # output: x'ed out string
+  def self.x_out_numbers(n, v)
+    l = [n.size - v, 0].max
+    n.gsub /^.{#{l}}/, "x" * l
   end
+
+
+  ##############################################################################
+  # Hole 2: RubyGolf.underscore                                                #
+  ##############################################################################
+  # input:  an identifier string in camel case notation. i.e. 'SchinkenWurst'
+  # ouput:  a 'ruby style' version of the identifier: all lowercase, former case
+  #         changes to upper case get a prepended underscore
+  def self.underscore(s)
+    s.gsub(/([a-z])[ -]*([A-Z])/, "\\1_\\2").downcase
+  end
+
+
+  ##############################################################################
+  # Hole 3: RubyGolf.symbolize_keys                                            #
+  ##############################################################################
+  # input:  a hash
+  # output: a hash where each key is a symbol.
+  #         The values stay the same except they're hashes too.
+  #         Values that are hashes contain only smybols as keys too, this
+  #         condition is maintained recursivley
+  def self.symbolize_keys(h)
+    h.to_a.inject({}) {|s, (k, v)| s[k.to_sym] = v.is_a?(Hash) ? symbolize_keys(v) : v ; s}
+  end
+
+
+  ##############################################################################
+  # Hole 4: RubyGolf.grid_computing                                            #
+  ##############################################################################
+  # input:  a grid of numbers between 00 and 99, separated by spaces, each row
+  #         ending in a \n
+  # output: the maximum value found by calculating the sums of all rows and
+  #         columns
+  def self.grid_computing(input)
+    r = 0
+    d = input.strip.split(/\n/).map {|r| r.split.map &:to_i }
+    d.each {|a| r = m a, r}
+    d[0].size.times {|i| a = d.map {|r| r[i]}; r = m a, r}
+    r
+  end
+
+  # calculates the sum of the given array a and returns the max between
+  # the sum and the given maximum m
+  def self.m(a, m)
+    [a.inject(&:+), m].max
+  end
+
+
+  ##############################################################################
+  # Hole 5: RubyGolf.reformat_hash                                             #
+  ##############################################################################
+  # input:  a string containing a hash expression possibly containing hash
+  #         rockets
+  # output: a string describing the same hash but without hash rockets, but
+  #         otherwise with the same formatting
+  def self.reformat_hash(s)
+   s.gsub(/:([a-zA-Z_]+) *=>/, '\1:')
+  end
+
+
+  ##############################################################################
+  # Hole 6: RubyGolf.pretty_hash                                               #
+  ##############################################################################
+  # input:  a recursive hash mapping of strings or symbols ultimately to lists
+  #         of strings or symbols
+  # output: a formatted string containing the information of the hash where:
+  #         * every line contains exactly one key or value
+  #         * values are prefixed by a hyphen and a space
+  #         * keys a suffixed with a colon
+  #         * all keys or values that are contained in a hash that is not top
+  #           level are prepended by two additional spaces per level away from
+  #           the top level
+  def self.pretty_hash(h, l = -1)
+    case h
+    when Hash
+      h.map {|k, v| i("#{k}:", l + 1) + pretty_hash(v, l + 1)}.join
+    when Array
+      h.map {|v| i "- " + v, l}.join
+    else
+      i "- #{h}", l
+    end
+  end
+
+  # indents a value
+  def self.i(v, l)
+    "  " * [0, l].max + v + "\n"
+  end
+
+
+  ##############################################################################
+  # Hole 7: RubyGolf.word_letter_sum                                           #
+  ##############################################################################
+  # input:  a string containing a list of space separated, letter-only words
+  # output: independent of the case of the characters of the words the following
+  #         value is calculated:
+  #         * take the sum of the alphabetical positions of the characters of a
+  #           word (A=1, B=2..)
+  #         * sort the words by that sum - the one with the largest sum will be
+  #           the first
+  #         * multiply each sum with the position of its word in the list (first
+  #           word 1* ...)
+  #         * sum all products
+  def self.word_letter_sum(w)
+    r = 0
+    w.
+      upcase.
+      split(' ').
+      inject([]) {|s, v| s <<  w(v)}.
+      sort.
+      reverse.
+      each_with_index {|v, i| r += (i + 1) * v}
+    r
+  end
+
+  # calculate the word value
+  def self.w(w)
+    w.chars.inject(0) {|s, c| s + "_ABCDEFGHIJKLMNOPQRSTUVWXYZ".index(c)}
+  end
+
 
 end
