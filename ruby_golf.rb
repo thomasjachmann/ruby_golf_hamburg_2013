@@ -32,7 +32,10 @@ module RubyGolf
   #         Values that are hashes contain only smybols as keys too, this
   #         condition is maintained recursivley
   def self.symbolize_keys(h)
-    h.to_a.inject({}) {|s, (k, v)| s[k.to_sym] = v.is_a?(Hash) ? symbolize_keys(v) : v ; s}
+    h.to_a.inject({}) {|s, (k, v)|
+      s[k.to_sym] = v.is_a?(Hash) ? symbolize_keys(v) : v
+      s
+    }
   end
 
 
@@ -43,11 +46,14 @@ module RubyGolf
   #         ending in a \n
   # output: the maximum value found by calculating the sums of all rows and
   #         columns
-  def self.grid_computing(input)
+  def self.grid_computing(i)
+    d = i.strip.split(/\n/).map {|r| r.split.map &:to_i }
     r = 0
-    d = input.strip.split(/\n/).map {|r| r.split.map &:to_i }
     d.each {|a| r = m a, r}
-    d[0].size.times {|i| a = d.map {|r| r[i]}; r = m a, r}
+    d[0].size.times {|i|
+      a = d.map {|r| r[i]}
+      r = m a, r
+    }
     r
   end
 
