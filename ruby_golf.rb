@@ -136,4 +136,27 @@ module RubyGolf
   end
 
 
+  ##############################################################################
+  # Hole 8: RubyGolf.bob_ross                                                  #
+  ##############################################################################
+  # input:  a string defining an image, each line consisting of three values:
+  #         * x coordinate
+  #         * y coordinate
+  #         * ascii value for that coordinate
+  # output: an ascii art string ready for output where there aren't any trailing
+  #         spaces after the last character in each line
+  def self.bob_ross(i)
+    i = i.strip.gsub(/\n/, " ").split.map(&:to_i)
+    a = d(i, 1).times.map {[" "] * d(i, 0)}
+    i.each_slice(3).map {|x, y, i|
+      a[y][x] = i.chr
+    }
+    a.map {|l| l.join.rstrip + "\n"}.join
+  end
+
+  # determines the dimension
+  def self.d(a, i)
+    a.each_slice(3).map {|s| s[i]}.max + 1
+  end
+
 end
