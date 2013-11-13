@@ -24,7 +24,7 @@ GEM
     lumberjack (1.0.4)
     method_source (0.8.2)
     minitest (5.0.8)
-    minitest-ruby_golf_metrics (0.0.9)
+    minitest-ruby_golf_metrics (0.0.11)
       minitest (>= 5.0.0)
       sourcify (>= 0.6.0.rc4)
     pry (0.9.12.3)
