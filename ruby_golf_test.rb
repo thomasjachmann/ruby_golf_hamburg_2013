@@ -9,6 +9,10 @@ class RubyGolfTest < Minitest::Test
 
   ##############################################################################
   # Hole 1: RubyGolf.x_out_numbers                                             #
+  #                                                                            #
+  # Problems:                                                                  #
+  # * result is easily mappable by input length/second parameter               #
+  # * too few properly x'ing out examples                                      #
   ##############################################################################
 
   def test_hole_1_x_out_numbers_1
@@ -83,6 +87,10 @@ class RubyGolfTest < Minitest::Test
 
   ##############################################################################
   # Hole 4: RubyGolf.grid_computing                                            #
+  #                                                                            #
+  # Problems:                                                                  #
+  # * result is easily mappable by input length since "2x2 row" misses the     #
+  #   trailing line break                                                      #
   ##############################################################################
 
   def test_hole_4_grid_computing
@@ -108,6 +116,9 @@ EOG
 
   ##############################################################################
   # Hole 5: RubyGolf.reformat_hash                                             #
+  #                                                                            #
+  # Problems:                                                                  #
+  # * no example with multiple keys to replace                                 #
   ##############################################################################
 
   def test_hole_5_reformat_hash_1
@@ -170,6 +181,9 @@ EOS
 
   ##############################################################################
   # Hole 7: RubyGolf.word_letter_sum                                           #
+  #                                                                            #
+  # Problems:                                                                  #
+  # * result is easily mappable by input length                                #
   ##############################################################################
 
   def test_hole_7_word_letter_sum_1
