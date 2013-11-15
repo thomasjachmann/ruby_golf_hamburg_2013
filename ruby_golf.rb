@@ -3,7 +3,7 @@
 # Ruby Golf Metrics
 #   Hole 1 (x_out_numbers): 31 character(s)
 #   Hole 2 (underscore): 43 character(s)
-#   Hole 3 (symbolize_keys): 57 character(s)
+#   Hole 3 (symbolize_keys): 46 character(s) (symbolize_keys: 2, s: 44)
 #   Hole 4 (grid_computing): 74 character(s)
 #   Hole 5 (reformat_hash): 24 character(s)
 #   Hole 6 (pretty_hash): 94 character(s)
@@ -49,7 +49,11 @@ module RubyGolf
   #         Values that are hashes contain only smybols as keys too, this
   #         condition is maintained recursivley
   def self.symbolize_keys(h)
-    Hash[h.map { |k,v| [k.to_sym, Hash === v ? symbolize_keys(v) : v] }]
+    s h
+  end
+
+  def self.s(h)
+    Hash[h.map { |k,v| [k.to_sym, Hash === v ? s(v) : v] }]
   end
 
 
