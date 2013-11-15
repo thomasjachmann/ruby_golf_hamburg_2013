@@ -1,4 +1,15 @@
 # encoding: UTF-8
+
+# Ruby Golf Metrics
+#   Hole 1 (x_out_numbers): 31 character(s)
+#   Hole 2 (underscore): 43 character(s)
+#   Hole 3 (symbolize_keys): 57 character(s)
+#   Hole 4 (grid_computing): 74 character(s)
+#   Hole 5 (reformat_hash): 24 character(s)
+#   Hole 6 (pretty_hash): 94 character(s)
+#   Hole 7 (word_letter_sum): 104 character(s)
+#   Hole 8 (bob_ross): 121 character(s)
+
 module RubyGolf
 
   ##############################################################################
