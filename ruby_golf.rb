@@ -7,7 +7,7 @@
 #   Hole 4 (grid_computing): 74 character(s)
 #   Hole 5 (reformat_hash): 24 character(s)
 #   Hole 6 (pretty_hash): 94 character(s)
-#   Hole 7 (word_letter_sum): 103 character(s)
+#   Hole 7 (word_letter_sum): 101 character(s)
 #   Hole 8 (bob_ross): 121 character(s)
 
 module RubyGolf
@@ -136,8 +136,8 @@ module RubyGolf
   #         * sum all products
   def self.word_letter_sum(s)
     x = 0
-    s.upcase.split.map{|w|
-      w.unpack("U*").inject(0) {|m,c| m + c - 64 }
+    s.split.map{|w|
+      w.unpack("U*").inject(0) {|m,c| m + (c - 64) % 32 }
     }.sort.reverse.inject(1){|m,w| x += m * w
       m+1
     }
