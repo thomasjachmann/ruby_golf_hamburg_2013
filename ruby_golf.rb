@@ -10,7 +10,7 @@ module RubyGolf
   #         v - number of visible trailing numbers
   # output: x'ed out string
   def self.x_out_numbers(n, v)
-    n[/\d{,#{v}}$/].rjust(n.size, 'x')
+    n[/\d{,#{v}}$/].rjust n.size, 'x'
   end
 
 
@@ -38,7 +38,7 @@ module RubyGolf
   #         Values that are hashes contain only smybols as keys too, this
   #         condition is maintained recursivley
   def self.symbolize_keys(h)
-    Hash[h.map { |k,v| [k.to_sym, (v.is_a? Hash) ? symbolize_keys(v) : v] }]
+    Hash[h.map { |k,v| [k.to_sym, Hash === v ? symbolize_keys(v) : v] }]
   end
 
 
@@ -52,11 +52,10 @@ module RubyGolf
   # output: the maximum value found by calculating the sums of all rows and
   #         columns
   def self.grid_computing(g)
-    a = g.split("\n").map{|s| s.split }
-    (a + a.transpose).inject(0) {|y,l|
-      s=l.inject(0){|m,n| m+n.to_i}
-      s>y ? s : y
-    }
+    a = g.lines.map &:split
+    (a + a.transpose).map {|l|
+      l.inject(0){|m,n| m+n.to_i}
+    }.max
   end
 
 
@@ -101,7 +100,7 @@ module RubyGolf
   #           level are prepended by two additional spaces per level away from
   #           the top level
   def self.pretty_hash(h, d=0)
-    a = h.map{|k,v| (" " * d) + k.to_s + ":\n" + (!v[0] ? pretty_hash(v,d+2) : [v].flatten.map{|a| (" " * d) + "- " + "#{a}" + "\n"}.join())}.join()
+    h.map{|k,v| " " * d + "#{k}:\n" + (v[0] ? Array(v).map{|a| " " * d + "- #{a}\n"}.join : pretty_hash(v,d+2))}.join
   end
 
 
@@ -122,9 +121,9 @@ module RubyGolf
   #         * sum all products
   def self.word_letter_sum(s)
     x = 0
-    s.upcase.split().map{|w|
-      w.each_char.inject(0) {|m,c| m + (c.ord - 64) }
-    }.sort.reverse.inject(1){|m,w| x += (m) * w
+    s.upcase.split.map{|w|
+      w.each_char.inject(0) {|m,c| m + c.ord - 64 }
+    }.sort.reverse.inject(1){|m,w| x += m * w
       m+1
     }
     x
@@ -144,9 +143,9 @@ module RubyGolf
   #         spaces after the last character in each line
   def self.bob_ross(s)
     b=[]
-    a=s.split(/\n/).map{|l| l.split(" ")}
+    a=s.lines.map &:split
     a.map{|c|
-      x,y,z = c.map(&:to_i)
+      x,y,z = c.map &:to_i
       b[y] ||= []
       b[y][x] = z
     }
